@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mentrex Standup
+
+A daily standup tracker for **Mentrex Academy** — built with Next.js 14 (App Router), Supabase, and Tailwind CSS.
+
+Track student progress, run daily standups, monitor WPM and speaking levels, and manage presentations — all with a premium dark purple UI.
+
+## Features
+
+- **Student Board** — Grid of student cards with live standup status (Done/Pending/Absent)
+- **Daily Standup** — Admin runs standups via a slide-over drawer form
+- **Analytics Dashboard** — WPM charts, speaking level timelines, presentation tracker, sortable summary table
+- **Student Management** — Add/edit/delete students with photo uploads to Supabase Storage
+- **Auth** — Supabase email/password auth with protected admin routes
+- **Responsive** — Works on desktop, tablet, and mobile
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Styling**: Tailwind CSS with custom design tokens
+- **Database + Auth + Storage**: Supabase
+- **Charts**: Recharts
+- **Icons**: Lucide React
+- **Font**: Inter (via next/font/google)
+- **Date Utils**: date-fns
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the repo
+
+```bash
+git clone <your-repo-url>
+cd stand-up
+npm install
+```
+
+### 2. Create a Supabase project
+
+1. Go to [supabase.com](https://supabase.com) and create a new project
+2. Copy your **Project URL** and **anon public key** from Settings → API
+
+### 3. Set environment variables
+
+Create a `.env.local` file in the project root:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### 4. Run the database migration
+
+1. Go to Supabase Dashboard → SQL Editor
+2. Paste the contents of `supabase/migration.sql` and run it
+3. Go to Storage and create a **public** bucket called `student-photos`
+
+### 5. Create an admin user
+
+In Supabase Dashboard → Authentication → Users, create a new user with email and password. This will be your admin account.
+
+### 6. Run the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── standups/      # Standup CRUD API routes
+│   │   └── students/      # Student CRUD API routes
+│   ├── dashboard/          # Analytics dashboard page
+│   ├── login/              # Admin login page
+│   ├── standup/            # Run standup page (admin)
+│   ├── students/           # Student management page (admin)
+│   ├── globals.css         # Design system & theme
+│   ├── layout.tsx          # Root layout with NavBar + Toast
+│   └── page.tsx            # Home — student grid
+├── components/
+│   ├── NavBar.tsx           # Navigation bar
+│   ├── PresentationCard.tsx # Presentation display card
+│   ├── SpeakingTimeline.tsx # Speaking level progress timeline
+│   ├── StandupDrawer.tsx    # Slide-over standup form
+│   ├── StatCard.tsx         # Dashboard metric card
+│   ├── StatusBanner.tsx     # Standup progress banner
+│   ├── StudentCard.tsx      # Student display card
+│   ├── Toast.tsx            # Toast notification system
+│   └── WPMChart.tsx         # WPM line chart (Recharts)
+├── lib/supabase/
+│   ├── client.ts            # Browser Supabase client
+│   ├── middleware.ts         # Auth middleware helper
+│   └── server.ts            # Server Supabase client
+├── types/
+│   └── index.ts             # TypeScript interfaces
+└── middleware.ts             # Next.js route protection
+```
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+Deploy to Vercel:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npx vercel
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Set the environment variables in Vercel Dashboard → Settings → Environment Variables.
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
