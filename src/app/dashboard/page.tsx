@@ -8,7 +8,7 @@ import SpeakingLevelChart from "@/components/SpeakingLevelChart";
 import SpeakingJourney from "@/components/SpeakingJourney";
 import PresentationCard from "@/components/PresentationCard";
 import { format, subDays, parseISO, isAfter, startOfWeek, eachDayOfInterval, isWeekend } from "date-fns";
-import { Keyboard, Presentation, UserX, ClipboardList, ArrowUpDown, TrendingUp } from "lucide-react";
+import { Keyboard, Presentation, UserX, ClipboardList, ArrowUpDown, TrendingUp, Trophy } from "lucide-react";
 import type { Student, Standup } from "@/types";
 import StudentAvatar from "@/components/StudentAvatar";
 
@@ -172,17 +172,71 @@ export default function DashboardPage() {
           color="#7c3aed" 
           subtitle="Mon – Fri only"
         />
-        <StatCard
-          icon={<TrendingUp className="h-5 w-5" />}
-          label="Most Improved"
-          value={mostImproved.student ? `+${mostImproved.improvement} WPM` : "Not enough data"}
-          color="#10b981"
-          subtitle={mostImproved.student ? (
-            <span className="text-sm font-medium text-mentrex-text-secondary truncate block">
-              {mostImproved.student.name}
-            </span>
-          ) : undefined}
-        />
+        {/* Most Improved Award Card */}
+        <div 
+          className="group relative overflow-hidden rounded-card flex flex-col p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+          style={{
+            background: "linear-gradient(135deg, #1a0533 0%, #0f2027 100%)",
+            border: "1px solid rgba(16, 185, 129, 0.4)",
+            boxShadow: "0 0 24px rgba(16, 185, 129, 0.12)"
+          }}
+        >
+          <style>{`
+            @keyframes shimmer {
+              0% { transform: translateX(-100%); }
+              100% { transform: translateX(100%); }
+            }
+          `}</style>
+          
+          <div className="flex items-start justify-between mb-6">
+            {/* Award Label Pill */}
+            <div 
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase"
+              style={{
+                backgroundColor: "rgba(245, 158, 11, 0.15)",
+                border: "1px solid rgba(245, 158, 11, 0.3)",
+                color: "#f59e0b"
+              }}
+            >
+              🏆 Most Improved
+            </div>
+
+            {/* Trophy Icon Box */}
+            <div 
+              className="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-xl shrink-0"
+              style={{ backgroundColor: "rgba(245, 158, 11, 0.15)" }}
+            >
+              <Trophy className="h-5 w-5 sm:h-6 sm:w-6" style={{ color: "#f59e0b" }} />
+            </div>
+          </div>
+
+          <div className="mt-auto">
+            {mostImproved.student ? (
+              <>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-1.5 truncate">
+                  {mostImproved.student.name}
+                </h3>
+                <div className="flex items-center gap-1.5 text-[#10b981] font-bold text-sm sm:text-base">
+                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
+                  +{mostImproved.improvement} WPM Growth
+                </div>
+              </>
+            ) : (
+              <p className="text-mentrex-text-secondary text-sm">Not enough data yet</p>
+            )}
+          </div>
+
+          {/* Animated Shimmer Line */}
+          <div className="absolute bottom-0 left-0 h-[3px] w-full overflow-hidden">
+            <div 
+              className="h-full w-full"
+              style={{
+                background: "linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.8), rgba(124, 58, 237, 0.8), transparent)",
+                animation: "shimmer 2.5s infinite linear"
+              }}
+            />
+          </div>
+        </div>
         <StatCard 
           icon={<Presentation className="h-5 w-5" />} 
           label="Upcoming Presentations" 
