@@ -10,7 +10,7 @@ import { Plus, Users, ClipboardList } from "lucide-react";
 import type { Student, StudentWithStandup, Standup } from "@/types";
 import type { User } from "@supabase/supabase-js";
 
-export default function HomePage() {
+export default function StandupBoardPage() {
   const supabase = createClient();
   const [students, setStudents] = useState<StudentWithStandup[]>([]);
   const [loading, setLoading] = useState(true);
@@ -25,13 +25,11 @@ export default function HomePage() {
   const fetchData = useCallback(async () => {
     setLoading(true);
 
-    // Fetch students
     const { data: studentsData } = await supabase
       .from("students")
       .select("*")
       .order("name");
 
-    // Fetch today's standups
     const { data: standupsData } = await supabase
       .from("standups")
       .select("*")
@@ -54,12 +52,14 @@ export default function HomePage() {
     supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
   }, [fetchData, supabase.auth]);
 
+  const isAdmin = !!user;
+
   const doneCount = students.filter(
     (s) => s.todayStandup?.status === "done" || s.todayStandup?.status === "absent"
   ).length;
 
   const handleCardClick = (student: StudentWithStandup) => {
-    if (!user) return;
+    if (!isAdmin) return;
     setSelectedStudent(student);
     setSelectedStandup(student.todayStandup || null);
     setDrawerOpen(true);
@@ -76,9 +76,11 @@ export default function HomePage() {
       <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
         {/* Page header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Student Board</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Standup Board</h1>
           <p className="mt-1 text-mentrex-text-secondary">
-            Today&apos;s standup overview for all students
+            {isAdmin
+              ? "Click a student card to record their standup."
+              : "Today's standup overview for all students."}
           </p>
         </div>
 
@@ -101,11 +103,8 @@ export default function HomePage() {
             <p className="mb-6 text-center text-mentrex-text-secondary">
               Get started by adding your first student to the roster.
             </p>
-            {user && (
-              <a
-                href="/students"
-                className="mentrex-btn-primary"
-              >
+            {isAdmin && (
+              <a href="/students" className="mentrex-btn-primary">
                 <Plus className="h-4 w-4" />
                 Add Students
               </a>
@@ -118,7 +117,7 @@ export default function HomePage() {
               <StudentCard
                 key={student.id}
                 student={student}
-                clickable={!!user}
+                clickable={isAdmin}
                 onClick={() => handleCardClick(student)}
               />
             ))}
@@ -126,8 +125,8 @@ export default function HomePage() {
         )}
       </div>
 
-      {/* FAB for adding students — Admin only */}
-      {user && (
+      {/* FAB — Admin only */}
+      {isAdmin && (
         <a
           href="/students"
           className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-20 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-mentrex-primary shadow-mentrex-glow transition-all duration-200 hover:bg-mentrex-primary-hover hover:scale-110"
@@ -137,14 +136,16 @@ export default function HomePage() {
         </a>
       )}
 
-      {/* Standup Modal */}
-      <StandupModal
-        student={selectedStudent}
-        existingStandup={selectedStandup}
-        isOpen={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        onSaved={fetchData}
-      />
+      {/* Standup Modal — Admin only */}
+      {isAdmin && (
+        <StandupModal
+          student={selectedStudent}
+          existingStandup={selectedStandup}
+          isOpen={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          onSaved={fetchData}
+        />
+      )}
     </>
   );
 }

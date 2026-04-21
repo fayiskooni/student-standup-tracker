@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import {
   GraduationCap,
-  Home,
   ClipboardList,
   BarChart3,
   Users,
@@ -18,8 +17,7 @@ import {
 import type { User } from "@supabase/supabase-js";
 
 const navLinks = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/standup", label: "Standup", icon: ClipboardList },
+  { href: "/", label: "Standup Board", icon: ClipboardList },
   { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
   { href: "/students", label: "Students", icon: Users },
 ];
