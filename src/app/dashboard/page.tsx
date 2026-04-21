@@ -69,7 +69,7 @@ export default function DashboardPage() {
       }
     });
 
-    return { student: improvedStudent, improvement: maxImprovement };
+    return { student: improvedStudent as Student | null, improvement: maxImprovement };
   }, [students, standups]);
 
   const upcomingPresentations = useMemo(() => {
