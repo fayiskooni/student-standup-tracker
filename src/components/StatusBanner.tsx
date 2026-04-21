@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardList } from "lucide-react";
+import { Calendar, CheckCircle2 } from "lucide-react";
 
 interface StatusBannerProps {
   doneCount: number;
@@ -16,36 +16,34 @@ export default function StatusBanner({
   const percentage = totalCount > 0 ? (doneCount / totalCount) * 100 : 0;
 
   return (
-    <div className="relative overflow-hidden border-b border-mentrex bg-mentrex-card">
-      {/* Purple gradient accent */}
-      <div className="absolute inset-0 bg-gradient-to-r from-mentrex-primary/5 via-transparent to-mentrex-primary/5" />
-      
-      <div className="relative mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:py-3 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="flex h-7 w-7 sm:h-8 sm:w-8 flex-shrink-0 items-center justify-center rounded-lg bg-mentrex-primary/20">
-            <ClipboardList className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-mentrex-primary" />
+    <div className="mx-auto max-w-7xl px-4 pt-6 sm:pt-8 sm:px-6 lg:px-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        {/* Left side: Heading & Date */}
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-3">
+            <Calendar className="h-6 w-6 text-mentrex-primary" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">
+              Daily Standup
+            </h1>
           </div>
-          <div className="min-w-0">
-            <p className="text-xs sm:text-sm font-medium text-white truncate">
-              📋 <span className="hidden xs:inline">Today&apos;s Standup — </span>{date}
-            </p>
-            <p className="text-xs text-mentrex-text-secondary">
-              {doneCount} of {totalCount} done
-            </p>
-          </div>
+          <p className="text-sm text-mentrex-text-secondary">
+            {date}
+          </p>
         </div>
 
-        {/* Progress indicator — always shown */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 ml-3">
-          <div className="h-1.5 sm:h-2 w-20 sm:w-32 overflow-hidden rounded-full bg-mentrex-elevated">
+        {/* Right side: Progress Box */}
+        <div className="flex items-center gap-3 sm:gap-4 rounded-xl border border-mentrex bg-mentrex-card/50 px-4 py-3 sm:px-5">
+          <CheckCircle2 className="h-5 w-5 text-mentrex-success" />
+          <div className="flex items-center gap-1.5 text-sm">
+            <span className="font-bold text-white">{doneCount}</span>
+            <span className="text-mentrex-text-secondary">/ {totalCount} complete</span>
+          </div>
+          <div className="ml-2 h-2 w-24 sm:w-32 overflow-hidden rounded-full bg-mentrex-elevated">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-mentrex-primary to-purple-400 transition-all duration-500"
+              className="h-full rounded-full bg-gradient-to-r from-mentrex-primary to-mentrex-success transition-all duration-500"
               style={{ width: `${percentage}%` }}
             />
           </div>
-          <span className="text-xs sm:text-sm font-semibold text-mentrex-primary">
-            {Math.round(percentage)}%
-          </span>
         </div>
       </div>
     </div>

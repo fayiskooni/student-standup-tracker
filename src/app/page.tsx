@@ -74,15 +74,7 @@ export default function StandupBoardPage() {
       />
 
       <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
-        {/* Page header */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Standup Board</h1>
-          <p className="mt-1 text-mentrex-text-secondary">
-            {isAdmin
-              ? "Click a student card to record their standup."
-              : "Today's standup overview for all students."}
-          </p>
-        </div>
+
 
         {loading ? (
           /* Skeleton loading grid */
