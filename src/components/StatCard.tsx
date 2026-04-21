@@ -10,6 +10,7 @@ interface StatCardProps {
   trend?: "up" | "down" | "neutral";
   trendValue?: string;
   color?: string;
+  onClick?: () => void;
 }
 
 export default function StatCard({
@@ -19,6 +20,7 @@ export default function StatCard({
   trend,
   trendValue,
   color = "#7c3aed",
+  onClick,
 }: StatCardProps) {
   const TrendIcon =
     trend === "up"
@@ -35,7 +37,10 @@ export default function StatCard({
       : "text-mentrex-text-secondary";
 
   return (
-    <div className="group relative overflow-hidden rounded-card border border-mentrex bg-mentrex-card p-3 sm:p-5 transition-all duration-300 hover:border-mentrex-primary/30 hover:shadow-mentrex">
+    <div 
+      onClick={onClick}
+      className={`group relative overflow-hidden rounded-card border border-mentrex bg-mentrex-card p-3 sm:p-5 transition-all duration-300 ${onClick ? "cursor-pointer hover:border-purple-500/40 hover:shadow-mentrex" : "hover:border-mentrex-primary/30 hover:shadow-mentrex"}`}
+    >
       {/* Accent glow */}
       <div
         className="absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-10 blur-2xl transition-opacity duration-300 group-hover:opacity-20"

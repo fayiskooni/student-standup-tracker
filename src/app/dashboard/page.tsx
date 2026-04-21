@@ -181,8 +181,20 @@ export default function DashboardPage() {
             </span>
           )}
         </div>
-        <StatCard icon={<Presentation className="h-5 w-5" />} label="Upcoming Presentations" value={upcomingPresentations.length} color="#f59e0b" />
-        <StatCard icon={<UserX className="h-5 w-5" />} label="Absent Today" value={absentToday.length} color="#ef4444" />
+        <StatCard 
+          icon={<Presentation className="h-5 w-5" />} 
+          label="Upcoming Presentations" 
+          value={upcomingPresentations.length} 
+          color="#f59e0b" 
+          onClick={() => document.getElementById('upcoming-presentations')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+        />
+        <StatCard 
+          icon={<UserX className="h-5 w-5" />} 
+          label="Absent Today" 
+          value={absentToday.length} 
+          color="#ef4444" 
+          onClick={() => document.getElementById('absent-today')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+        />
       </div>
 
       {/* WPM Chart */}
@@ -197,7 +209,7 @@ export default function DashboardPage() {
 
       {/* Upcoming Presentations */}
       {upcomingPresentations.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-8" id="upcoming-presentations">
           <h3 className="mb-4 text-lg font-bold text-white">Upcoming Presentations</h3>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {upcomingPresentations.slice(0, 6).map((s) => {
@@ -210,7 +222,7 @@ export default function DashboardPage() {
 
       {/* Absent Today */}
       {absentToday.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-8" id="absent-today">
           <h3 className="mb-4 text-lg font-bold text-white">Absent Today</h3>
           <div className="flex flex-wrap gap-3">
             {absentToday.map(({ student }) => student && (
