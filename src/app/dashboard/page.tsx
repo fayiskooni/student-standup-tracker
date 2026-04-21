@@ -6,7 +6,7 @@ import StatCard from "@/components/StatCard";
 import WPMChart from "@/components/WPMChart";
 import SpeakingTimeline from "@/components/SpeakingTimeline";
 import PresentationCard from "@/components/PresentationCard";
-import { format, subDays, parseISO, isAfter } from "date-fns";
+import { format, subDays, parseISO, isAfter, startOfWeek, eachDayOfInterval, isWeekend } from "date-fns";
 import { Keyboard, Presentation, UserX, ClipboardList, ArrowUpDown } from "lucide-react";
 import type { Student, Standup } from "@/types";
 import StudentAvatar from "@/components/StudentAvatar";
@@ -57,6 +57,30 @@ export default function DashboardPage() {
     return standups
       .filter((s) => s.has_presentation && s.presentation_date && isAfter(parseISO(s.presentation_date), new Date()))
       .sort((a, b) => (a.presentation_date || "").localeCompare(b.presentation_date || ""));
+  }, [standups]);
+
+  const { workingDaysThisWeek, standupsCompleted } = useMemo(() => {
+    const currentWeekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+    const intervalDays = eachDayOfInterval({ start: currentWeekStart, end: new Date() });
+    
+    const workingDays = Math.min(
+      intervalDays.filter(day => !isWeekend(day)).length,
+      5
+    );
+
+    const weekStartStr = format(currentWeekStart, "yyyy-MM-dd");
+    const todayStr = format(new Date(), "yyyy-MM-dd");
+
+    const standupDatesThisWeek = standups
+      .filter(s => s.date >= weekStartStr && s.date <= todayStr)
+      .map(s => s.date);
+
+    const distinctDates = new Set(standupDatesThisWeek).size;
+
+    return {
+      workingDaysThisWeek: workingDays,
+      standupsCompleted: distinctDates,
+    };
   }, [standups]);
 
   const absentToday = useMemo(() => {
@@ -121,7 +145,10 @@ export default function DashboardPage() {
 
       {/* Stat cards */}
       <div className="mb-6 sm:mb-8 grid gap-3 sm:gap-5 grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<ClipboardList className="h-5 w-5" />} label="Standups This Week" value={weekStandups.filter((s) => s.status === "done" || s.status === "absent").length} color="#7c3aed" />
+        <div className="flex flex-col">
+          <StatCard icon={<ClipboardList className="h-5 w-5" />} label="Standups This Week" value={`${standupsCompleted} / ${workingDaysThisWeek}`} color="#7c3aed" />
+          <span className="mt-1 ml-1 text-xs text-mentrex-text-secondary">Mon – Fri only</span>
+        </div>
         <StatCard icon={<Keyboard className="h-5 w-5" />} label="Average WPM" value={avgWpm} color="#3b82f6" />
         <StatCard icon={<Presentation className="h-5 w-5" />} label="Upcoming Presentations" value={upcomingPresentations.length} color="#f59e0b" />
         <StatCard icon={<UserX className="h-5 w-5" />} label="Absent Today" value={absentToday.length} color="#ef4444" />
