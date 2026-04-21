@@ -73,10 +73,10 @@ export default function HomePage() {
         date={todayDisplay}
       />
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
         {/* Page header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white">Student Board</h1>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Student Board</h1>
           <p className="mt-1 text-mentrex-text-secondary">
             Today&apos;s standup overview for all students
           </p>
@@ -130,10 +130,10 @@ export default function HomePage() {
       {user && (
         <a
           href="/students"
-          className="fixed bottom-8 right-8 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-mentrex-primary shadow-mentrex-glow transition-all duration-200 hover:bg-mentrex-primary-hover hover:scale-110"
+          className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-20 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-mentrex-primary shadow-mentrex-glow transition-all duration-200 hover:bg-mentrex-primary-hover hover:scale-110"
           title="Manage Students"
         >
-          <ClipboardList className="h-6 w-6 text-white" />
+          <ClipboardList className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
         </a>
       )}
 

@@ -153,14 +153,14 @@ export default function StudentsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Student Management</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Student Management</h1>
           <p className="mt-1 text-mentrex-text-secondary">{students.length} students enrolled</p>
         </div>
         {user && (
-          <button onClick={openAddModal} className="mentrex-btn-primary">
+          <button onClick={openAddModal} className="mentrex-btn-primary self-start sm:self-auto">
             <Plus className="h-4 w-4" /> Add Student
           </button>
         )}
@@ -198,7 +198,7 @@ export default function StudentsPage() {
                     </div>
                   </div>
                   {user && (
-                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                       <button onClick={() => openEditModal(student)} className="rounded-lg p-2 text-mentrex-text-secondary hover:bg-mentrex-elevated hover:text-white"><Pencil className="h-4 w-4" /></button>
                       <button onClick={() => setDeleteConfirm(student.id)} className="rounded-lg p-2 text-mentrex-text-secondary hover:bg-mentrex-danger/10 hover:text-mentrex-danger"><Trash2 className="h-4 w-4" /></button>
                     </div>
@@ -318,7 +318,7 @@ export default function StudentsPage() {
                 </div>
 
                 {/* Join Date + Duration */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="mb-2 block text-sm font-medium text-mentrex-text-secondary">Join Date</label>
                     <input type="date" value={joinDate} onChange={(e) => setJoinDate(e.target.value)} className="mentrex-input" required />
@@ -332,7 +332,7 @@ export default function StudentsPage() {
                 </div>
 
                 {/* WPM + Score */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="mb-2 block text-sm font-medium text-mentrex-text-secondary">Starting WPM</label>
                     <input type="number" value={currentWpm} onChange={(e) => setCurrentWpm(parseInt(e.target.value) || 0)} min={0} className="mentrex-input" />
