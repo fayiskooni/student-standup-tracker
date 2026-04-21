@@ -165,23 +165,24 @@ export default function DashboardPage() {
 
       {/* Stat cards */}
       <div className="mb-6 sm:mb-8 grid gap-3 sm:gap-5 grid-cols-2 lg:grid-cols-4">
-        <div className="flex flex-col">
-          <StatCard icon={<ClipboardList className="h-5 w-5" />} label="Standups This Week" value={`${standupsCompleted} / ${workingDaysThisWeek}`} color="#7c3aed" />
-          <span className="mt-1 ml-1 text-xs text-mentrex-text-secondary">Mon – Fri only</span>
-        </div>
-        <div className="flex flex-col">
-          <StatCard
-            icon={<TrendingUp className="h-5 w-5" />}
-            label="Most Improved"
-            value={mostImproved.student ? `+${mostImproved.improvement} WPM` : "Not enough data"}
-            color="#10b981"
-          />
-          {mostImproved.student && (
-            <span className="mt-1 ml-1 text-xs text-mentrex-text-secondary truncate">
+        <StatCard 
+          icon={<ClipboardList className="h-5 w-5" />} 
+          label="Standups This Week" 
+          value={`${standupsCompleted} / ${workingDaysThisWeek}`} 
+          color="#7c3aed" 
+          subtitle="Mon – Fri only"
+        />
+        <StatCard
+          icon={<TrendingUp className="h-5 w-5" />}
+          label="Most Improved"
+          value={mostImproved.student ? `+${mostImproved.improvement} WPM` : "Not enough data"}
+          color="#10b981"
+          subtitle={mostImproved.student ? (
+            <span className="text-sm font-medium text-mentrex-text-secondary truncate block">
               {mostImproved.student.name}
             </span>
-          )}
-        </div>
+          ) : undefined}
+        />
         <StatCard 
           icon={<Presentation className="h-5 w-5" />} 
           label="Upcoming Presentations" 

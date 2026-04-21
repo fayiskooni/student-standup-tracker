@@ -11,6 +11,7 @@ interface StatCardProps {
   trendValue?: string;
   color?: string;
   onClick?: () => void;
+  subtitle?: ReactNode | string;
 }
 
 export default function StatCard({
@@ -21,6 +22,7 @@ export default function StatCard({
   trendValue,
   color = "#7c3aed",
   onClick,
+  subtitle,
 }: StatCardProps) {
   const TrendIcon =
     trend === "up"
@@ -39,7 +41,7 @@ export default function StatCard({
   return (
     <div 
       onClick={onClick}
-      className={`group relative overflow-hidden rounded-card border border-mentrex bg-mentrex-card p-3 sm:p-5 transition-all duration-300 ${onClick ? "cursor-pointer hover:border-purple-500/40 hover:shadow-mentrex" : "hover:border-mentrex-primary/30 hover:shadow-mentrex"}`}
+      className={`group relative overflow-hidden rounded-card border border-mentrex bg-mentrex-card p-3 sm:p-5 transition-all duration-300 flex flex-col h-full ${onClick ? "cursor-pointer hover:border-purple-500/40 hover:shadow-mentrex" : "hover:border-mentrex-primary/30 hover:shadow-mentrex"}`}
     >
       {/* Accent glow */}
       <div
@@ -47,7 +49,7 @@ export default function StatCard({
         style={{ backgroundColor: color }}
       />
 
-      <div className="relative">
+      <div className="relative flex-1 flex flex-col">
         <div className="mb-2 sm:mb-3 flex items-center justify-between">
           <div
             className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg"
@@ -65,6 +67,16 @@ export default function StatCard({
 
         <p className="text-xl sm:text-2xl font-bold text-white">{value}</p>
         <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-mentrex-text-secondary leading-tight">{label}</p>
+        
+        {subtitle && (
+          <div className="mt-auto pt-3">
+            {typeof subtitle === 'string' ? (
+              <p className="text-[11px] sm:text-xs text-mentrex-text-secondary truncate">{subtitle}</p>
+            ) : (
+              subtitle
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
