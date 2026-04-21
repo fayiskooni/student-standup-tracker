@@ -4,7 +4,8 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import StatCard from "@/components/StatCard";
 import WPMChart from "@/components/WPMChart";
-import SpeakingTimeline from "@/components/SpeakingTimeline";
+import SpeakingLevelChart from "@/components/SpeakingLevelChart";
+import SpeakingJourney from "@/components/SpeakingJourney";
 import PresentationCard from "@/components/PresentationCard";
 import { format, subDays, parseISO, isAfter, startOfWeek, eachDayOfInterval, isWeekend } from "date-fns";
 import { Keyboard, Presentation, UserX, ClipboardList, ArrowUpDown, TrendingUp } from "lucide-react";
@@ -202,9 +203,10 @@ export default function DashboardPage() {
         <WPMChart standups={filteredStandups} students={students} />
       </div>
 
-      {/* Speaking Timeline */}
-      <div className="mb-8">
-        <SpeakingTimeline standups={standups} students={students} />
+      {/* Speaking Level — Cohort Chart + Journey Tracker */}
+      <div className="mb-8 space-y-5">
+        <SpeakingLevelChart students={students} />
+        <SpeakingJourney students={students} standups={standups} />
       </div>
 
       {/* Upcoming Presentations */}
