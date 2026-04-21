@@ -8,7 +8,7 @@ import SpeakingLevelChart from "@/components/SpeakingLevelChart";
 import SpeakingJourney from "@/components/SpeakingJourney";
 import PresentationCard from "@/components/PresentationCard";
 import { format, subDays, parseISO, isAfter, startOfWeek, eachDayOfInterval, isWeekend } from "date-fns";
-import { Keyboard, Presentation, UserX, ClipboardList, ArrowUpDown, TrendingUp, Trophy } from "lucide-react";
+import { Presentation, UserX, ClipboardList, ArrowUpDown, TrendingUp, Trophy } from "lucide-react";
 import type { Student, Standup } from "@/types";
 import StudentAvatar from "@/components/StudentAvatar";
 
@@ -44,10 +44,7 @@ export default function DashboardPage() {
   }, [standups, dateRange]);
 
   const todayStandups = useMemo(() => standups.filter((s) => s.date === today), [standups, today]);
-  const weekStandups = useMemo(() => {
-    const cutoff = subDays(new Date(), 7);
-    return standups.filter((s) => isAfter(parseISO(s.date), cutoff));
-  }, [standups]);
+
 
   const mostImproved = useMemo(() => {
     let maxImprovement = -Infinity;
