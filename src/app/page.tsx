@@ -55,7 +55,7 @@ export default function HomePage() {
   }, [fetchData, supabase.auth]);
 
   const doneCount = students.filter(
-    (s) => s.todayStandup?.status === "done"
+    (s) => s.todayStandup?.status === "done" || s.todayStandup?.status === "absent"
   ).length;
 
   const handleCardClick = (student: StudentWithStandup) => {

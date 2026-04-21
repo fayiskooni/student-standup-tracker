@@ -121,7 +121,7 @@ export default function DashboardPage() {
 
       {/* Stat cards */}
       <div className="mb-6 sm:mb-8 grid gap-3 sm:gap-5 grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={<ClipboardList className="h-5 w-5" />} label="Standups This Week" value={weekStandups.filter((s) => s.status === "done").length} color="#7c3aed" />
+        <StatCard icon={<ClipboardList className="h-5 w-5" />} label="Standups This Week" value={weekStandups.filter((s) => s.status === "done" || s.status === "absent").length} color="#7c3aed" />
         <StatCard icon={<Keyboard className="h-5 w-5" />} label="Average WPM" value={avgWpm} color="#3b82f6" />
         <StatCard icon={<Presentation className="h-5 w-5" />} label="Upcoming Presentations" value={upcomingPresentations.length} color="#f59e0b" />
         <StatCard icon={<UserX className="h-5 w-5" />} label="Absent Today" value={absentToday.length} color="#ef4444" />
