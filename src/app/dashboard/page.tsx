@@ -7,7 +7,7 @@ import WPMChart from "@/components/WPMChart";
 import SpeakingTimeline from "@/components/SpeakingTimeline";
 import PresentationCard from "@/components/PresentationCard";
 import { format, subDays, parseISO, isAfter, startOfWeek, eachDayOfInterval, isWeekend } from "date-fns";
-import { Keyboard, Presentation, UserX, ClipboardList, ArrowUpDown } from "lucide-react";
+import { Keyboard, Presentation, UserX, ClipboardList, ArrowUpDown, TrendingUp } from "lucide-react";
 import type { Student, Standup } from "@/types";
 import StudentAvatar from "@/components/StudentAvatar";
 
@@ -48,10 +48,29 @@ export default function DashboardPage() {
     return standups.filter((s) => isAfter(parseISO(s.date), cutoff));
   }, [standups]);
 
-  const avgWpm = useMemo(() => {
-    if (students.length === 0) return 0;
-    return Math.round(students.reduce((sum, s) => sum + s.current_wpm, 0) / students.length);
-  }, [students]);
+  const mostImproved = useMemo(() => {
+    let maxImprovement = -Infinity;
+    let improvedStudent: Student | null = null;
+
+    students.forEach((student) => {
+      const studentStandups = standups
+        .filter((s) => s.student_id === student.id && s.keyboard_wpm != null)
+        .sort((a, b) => a.date.localeCompare(b.date));
+
+      if (studentStandups.length >= 2) {
+        const firstWPM = studentStandups[0].keyboard_wpm;
+        const latestWPM = studentStandups[studentStandups.length - 1].keyboard_wpm;
+        const improvement = latestWPM - firstWPM;
+
+        if (improvement > maxImprovement) {
+          maxImprovement = improvement;
+          improvedStudent = student;
+        }
+      }
+    });
+
+    return { student: improvedStudent, improvement: maxImprovement };
+  }, [students, standups]);
 
   const upcomingPresentations = useMemo(() => {
     return standups
@@ -149,7 +168,19 @@ export default function DashboardPage() {
           <StatCard icon={<ClipboardList className="h-5 w-5" />} label="Standups This Week" value={`${standupsCompleted} / ${workingDaysThisWeek}`} color="#7c3aed" />
           <span className="mt-1 ml-1 text-xs text-mentrex-text-secondary">Mon – Fri only</span>
         </div>
-        <StatCard icon={<Keyboard className="h-5 w-5" />} label="Average WPM" value={avgWpm} color="#3b82f6" />
+        <div className="flex flex-col">
+          <StatCard
+            icon={<TrendingUp className="h-5 w-5" />}
+            label="Most Improved"
+            value={mostImproved.student ? `+${mostImproved.improvement} WPM` : "Not enough data"}
+            color="#10b981"
+          />
+          {mostImproved.student && (
+            <span className="mt-1 ml-1 text-xs text-mentrex-text-secondary truncate">
+              {mostImproved.student.name}
+            </span>
+          )}
+        </div>
         <StatCard icon={<Presentation className="h-5 w-5" />} label="Upcoming Presentations" value={upcomingPresentations.length} color="#f59e0b" />
         <StatCard icon={<UserX className="h-5 w-5" />} label="Absent Today" value={absentToday.length} color="#ef4444" />
       </div>
