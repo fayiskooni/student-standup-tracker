@@ -209,7 +209,7 @@ export default function DashboardPage() {
 
       {/* Upcoming Presentations */}
       {upcomingPresentations.length > 0 && (
-        <div className="mb-8" id="upcoming-presentations">
+        <div className="mb-8 scroll-mt-24" id="upcoming-presentations">
           <h3 className="mb-4 text-lg font-bold text-white">Upcoming Presentations</h3>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {upcomingPresentations.slice(0, 6).map((s) => {
@@ -222,13 +222,24 @@ export default function DashboardPage() {
 
       {/* Absent Today */}
       {absentToday.length > 0 && (
-        <div className="mb-8" id="absent-today">
+        <div className="mb-8 scroll-mt-24" id="absent-today">
           <h3 className="mb-4 text-lg font-bold text-white">Absent Today</h3>
-          <div className="flex flex-wrap gap-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {absentToday.map(({ student }) => student && (
-              <div key={student.id} className="flex items-center gap-3 rounded-card border border-mentrex-danger/20 bg-mentrex-danger/5 px-4 py-3">
-                <StudentAvatar student={student} size={40} />
-                <span className="text-sm font-medium text-white">{student.name}</span>
+              <div 
+                key={student.id} 
+                className="group flex items-center gap-4 rounded-card border border-mentrex-danger/20 bg-gradient-to-r from-mentrex-danger/10 to-mentrex-danger/5 px-4 py-3 transition-all duration-300 hover:border-mentrex-danger/40 hover:shadow-[0_8px_30px_rgb(239,68,68,0.15)] hover:-translate-y-1"
+              >
+                <div className="relative flex-shrink-0">
+                  <StudentAvatar student={student} size={44} />
+                  <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-mentrex-card bg-mentrex-danger shadow-sm">
+                    <span className="text-[9px] text-white">🔴</span>
+                  </div>
+                </div>
+                <div className="flex min-w-0 flex-col">
+                  <span className="truncate text-sm font-bold text-white transition-colors group-hover:text-red-400">{student.name}</span>
+                  <span className="text-[11px] font-medium text-mentrex-danger/70">Marked Absent</span>
+                </div>
               </div>
             ))}
           </div>
